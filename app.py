@@ -1,0 +1,76 @@
+from flask import Flask, jsonify, request
+from peewee import DoesNotExist, IntegrityError
+
+from control import ConfigController
+
+
+app = Flask(
+    __name__,
+    static_url_path="/static/",
+    static_folder="static/")
+
+
+@app.route("/config")
+def get_config():
+    """获取配置项
+    """
+    controller = ConfigController()
+    data = controller.get(request.args.get("config_name", None))
+    return jsonify(data)
+
+
+@app.route("/config", methods=["POST"])
+def create_config():
+    """创建配置项目
+    """
+    data = request.json
+    controller = ConfigController()
+    redata = controller.post(
+        config_name=data.get("config_name"),
+        config_type=data.get("config_type"),
+        config_value=data.get("config_value")
+    )
+    return jsonify(redata)
+
+
+@app.route("/config", methods=["PUT"])
+def update_config():
+    """更新配置项目
+    """
+    data = request.json
+    controller = ConfigController()
+    redata = controller.put(
+        data.get("config_name"),
+        data.get("config_type"),
+        data.get("config_value")
+    )
+    return redata
+
+
+@app.route("/config", methods=["DELETE"])
+def delete_config():
+    """删除配置项目
+    """
+    config_names = request.json.get("config_names")
+    controller = ConfigController()
+    redata = controller.delete(config_names)
+    return redata
+
+
+@app.errorhandler(DoesNotExist)
+def record_do_not_exist(exception):
+    return {
+        "success": True,
+        "data": None
+    }
+
+
+@app.errorhandler(IntegrityError)
+def record_already_created(exception):
+    return {
+        "success": False
+    }
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
