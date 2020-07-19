@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, Response
 from peewee import DoesNotExist, IntegrityError
 
 from control import ConfigController
@@ -8,6 +8,14 @@ app = Flask(
     __name__,
     static_url_path="/static/",
     static_folder="static/")
+
+
+@app.after_request
+def cross_origin(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    response.headers["Access-Control-Allow-Headers"] = "*"
+    response.headers["Access-Control-Allow-Methods"] = "*"
+    return response
 
 
 @app.route("/config")
@@ -55,6 +63,16 @@ def delete_config():
     controller = ConfigController()
     redata = controller.delete(config_names)
     return redata
+
+
+@app.route("/config", methods=["OPTIONS"])
+def options_method():
+    """Request from Front
+    """
+    res = Response(headers={
+        "Allow": ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    })
+    return res
 
 
 @app.errorhandler(DoesNotExist)
