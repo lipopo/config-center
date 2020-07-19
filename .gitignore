@@ -1,12 +1,24 @@
 # virtual env
 venv/
 
+# package directory
+node_modules/
+
 # idea config file
 .ycm_extra_cofig.py
+
+# cache files
+.cache/
 
 # pre-compile files
 __pycache__/
 *.pyc
+dist/
+
+# temp file
+*-lock.json
+*.swp
+*swo
 
 # database file
 *.db
