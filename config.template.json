@@ -1,3 +1,4 @@
 {
+    "base_url": "",
     "database": "sqlite://./data.db"
 }
