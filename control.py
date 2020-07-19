@@ -49,16 +49,15 @@ class ConfigController(Controller):
         return {
             "success": True,
             "data": {
-                "config_name": config_name,
-                "config_type": config_type,
-                "config_value": config_value
+                "config_name": config_instance.config_name,
+                "config_type": config_instance.config_type,
+                "config_value": config_instance.config_value
             }
         }
 
     def post(self, config_name: str, config_type: str, config_value: str):
         """创建模型数据
         """
-        print(config_name, config_type, config_value)
         Config.create(
             config_name=config_name,
             config_type=config_type,
