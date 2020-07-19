@@ -1,0 +1,15 @@
+# virtual env
+venv/
+
+# idea config file
+.ycm_extra_cofig.py
+
+# pre-compile files
+__pycache__/
+*.pyc
+
+# database file
+*.db
+
+# config file
+config.json
