@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, Response
+from flask import Flask, jsonify, request, Response, render_template
 from peewee import DoesNotExist, IntegrityError
 
 from control import ConfigController
@@ -7,7 +7,9 @@ from control import ConfigController
 app = Flask(
     __name__,
     static_url_path="/static/",
-    static_folder="static/")
+    static_folder="static/",
+    template_folder="static/"
+)
 
 
 @app.after_request
@@ -16,6 +18,11 @@ def cross_origin(response):
     response.headers["Access-Control-Allow-Headers"] = "*"
     response.headers["Access-Control-Allow-Methods"] = "*"
     return response
+
+
+@app.route("/")
+def index():
+    return render_template("index.html")
 
 
 @app.route("/config")
